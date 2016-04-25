@@ -3,6 +3,7 @@ namespace Cyneek\LaravelMultipleStapler\Models;
 
 use Codesleeve\Stapler\ORM\EloquentTrait;
 use Codesleeve\Stapler\ORM\StaplerableInterface;
+use Cyneek\LaravelMultipleStapler\Interfaces\LaravelStaplerInterface;
 use Illuminate\Database\Eloquent\Model;
 
 /**

@@ -2,7 +2,7 @@
 
 ## Índice
 
-* [Instalación]()
+* [Instalación](#instalacion)
 * [Descripción]()
     * [Métodos]()
 * [Configuración de las propiedades Stapler]()

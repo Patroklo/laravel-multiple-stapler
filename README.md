@@ -2,21 +2,21 @@
 
 ## Index
 
-* ### Install
-* ### Description
-    * #### Methods
-* ### Configuration of Stapler properties
-    * #### Declaring single file properties
-    * #### Declaring multiple file properties
-* ### File insertion
-    * #### Inserting files in single file properties
-    * #### Inserting files in multiple file properties
-* ### Acessing uploaded file data
-    * #### Acessing single file parameters
-    * #### Acessing multiple file parameters
-* ### Deleting linked files
-    * #### Explicit deletion of single file properties
-    * #### Explicit deletion of multiple file properties
+* [Install](https://github.com/Patroklo/laravel-multiple-stapler#install)
+* [Description](https://github.com/Patroklo/laravel-multiple-stapler#description)
+    * [Methods](https://github.com/Patroklo/laravel-multiple-stapler#methods)
+* [Configuration of Stapler properties](https://github.com/Patroklo/laravel-multiple-stapler#configuration-of-stapler-properties)
+    * [Declaring single file properties](https://github.com/Patroklo/laravel-multiple-stapler#declaring-single-file-properties)
+    * [Declaring multiple file properties](https://github.com/Patroklo/laravel-multiple-stapler#declaring-multiple-file-properties)
+* [File insertion](https://github.com/Patroklo/laravel-multiple-stapler#file-insertion)
+    * [Inserting files in single file properties](https://github.com/Patroklo/laravel-multiple-stapler#inserting-files-in-single-file-properties)
+    * [Inserting files in multiple file properties](https://github.com/Patroklo/laravel-multiple-stapler#inserting-files-in-multiple-file-properties)
+* [Acessing uploaded file data](https://github.com/Patroklo/laravel-multiple-stapler#acessing-uploaded-file-data)
+    * [Acessing single file parameters](https://github.com/Patroklo/laravel-multiple-stapler#acessing-single-file-parameters)
+    * [Acessing multiple file parameters](https://github.com/Patroklo/laravel-multiple-stapler#acessing-multiple-file-parameters)
+* [Deleting linked files](https://github.com/Patroklo/laravel-multiple-stapler#deleting-linked-files)
+    * [Explicit deletion of single file properties](https://github.com/Patroklo/laravel-multiple-stapler#explicit-deletion-of-single-file-properties)
+    * [Explicit deletion of multiple file properties](https://github.com/Patroklo/laravel-multiple-stapler#explicit-deletion-of-multiple-file-properties)
 
 ## Install
 

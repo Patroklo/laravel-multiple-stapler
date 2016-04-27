@@ -1,5 +1,22 @@
 # Manejador de múltiples ficheros para Laravel Stapler
 
+## Índice
+
+* ### Instalación
+* ### Descripción
+    * #### Métodos
+* ### Configuración de las propiedades Stapler
+    * #### Declarar propiedades de un único fichero
+    * #### Declarar propiedades de múltiples ficheros
+* ### Inserción de ficheros
+    * #### Insertar ficheros en propiedades de un único fichero
+    * #### Insertar ficheros en propiedades de un múltiples ficheros
+* ### Acceso de datos de archivo
+    * #### Parámetros de un único fichero
+    * #### Parámetros de un múltiples ficheros
+* ### Borrado de archivos enlazados.
+    * #### Borrado explícito para parámetros de un único fichero
+    * #### Borrado explícito de parámetros de múltiples ficheros
 
 ## Instalación
 
@@ -41,9 +58,9 @@ Los parámetros que ambos métodos aceptan son:
  
  * **attachedModelClass**: [String|Opcional] Permite definir un Model que se encargará de almacenar la información de los ficheros enlazados a este parámetro diferente del estandar: `StaplerFiles`. El Model indicado aquí debe implementar el interface `LaravelStaplerInterface`. 
 
-## Configuración de las propiedades
+## Configuración de las propiedades Stapler
 
-### Definir propiedades de un único fichero
+### Declarar propiedades de un único fichero
 
 Este es el comportamiento normal de la librería de Stapler para Laravel. Permite subir un único fichero y enlazarlo una propiedad de un Model cargado, permitiendo todas las operaciones que se realizarían sobre un fichero subido en la versión vanilla de Stapler. 
 
@@ -76,7 +93,7 @@ class Example extends \Eloquent
 
 Atención: Es muy importante colocar los métodos creadores de parámetros ANTES de la llamada al parent del construct.
 
-### Definir propiedades de múltiples ficheros
+### Declarar propiedades de múltiples ficheros
 
 Este comportamiento es posible gracias a las propiedades de las tablas polimórficas de Laravel, que almacenarán los datos de cada fichero enlazándolo a los objetos del Model padre que los contiene gracias a la definición completa de su clase, su campo principal (usualmente el id) y el nombre de la propiedad que lo contiene. Esto permite el reutilizar una misma tabla para múltiples Models y propiedades.
 
@@ -135,17 +152,16 @@ Hay que tener en cuenta, que cuando se esté realizando una operación de `updat
 
 public function store()
 {
-    // Create and save a new Example object, mass assigning all of the input fields (including the 'avatar' file field).
     // Crear y guardar un objeto Example, asignando en masa todos los campos tipo input (incluyendo el campo tipo fichero 'avatar').
     $example = Example::create(Input::all());
 }
 
 ```
 
-Este es el código mínimo necesario para poder subir un fichero mediante un formulario y enlazarlo a un objeto de un Model. La explicación de los modos de acceso a los datos de éste está descrita más adelante.
+Este es el código mínimo necesario para poder subir un fichero mediante un formulario y enlazarlo a un objeto de un Model. La explicación de cómo acceder a los datos de éste está descrita más adelante.
 
 
-### Formularios de más de un fichero
+### Insertar ficheros en propiedades de múltiples ficheros
 
 Es necesario disponer de un Model que tenga un parámetro dado de alta como fichero múltiple a través del método "hasMultipleAttachedFiles".
 
@@ -169,7 +185,6 @@ Es necesario disponer de un Model que tenga un parámetro dado de alta como fich
 
 public function storeMultiple()
 {
-    // Create and save a new Example object, mass assigning all of the input fields (including the 'avatar' file field).
     // Crear y guardar un objeto Example, asignando en masa todos los campos tipo input (incluyendo el campo tipo fichero 'avatar').
     $example = Example::create(Input::all());
 }
@@ -183,13 +198,13 @@ Como se puede ver, realmente la única diferencia a la hora de trabajar con fich
 
 #### Parámetros de un único fichero
 
-Para acceder a los datos de un archivo enlazado a un objeto cargado tan sólo tendremos que llamar al parámetro como si se tratara de una relación de Laravel, tan sólo añadiendo un
+Para acceder a los datos de un archivo enlazado a un objeto cargado tan sólo tendremos que llamar al parámetro como si se tratara de una relación de Laravel.
 
 ```php
 
     $example = Example::find(1);
    
-    $example->avatar->file->derp();
+    $example->avatar->createdAt();
    
 
 ```
@@ -206,15 +221,14 @@ La única diferencia en este caso es que, en lugar de retornar el atributo el Mo
    
     foreach ($example->avatar as $avatar)
     {
-        echo $avatar->file->derp();
+        echo $avatar->file->createdAt();
     }
-   
 
 ```
 
 
 
-### Borrado de archivos enlazdados.
+### Borrado de archivos enlazados.
 
 Hay que tener en cuenta que, si borramos el objeto padre que tiene enlazados los ficheros a través de los parámetros Stapler, éstos ficheros se borrarán automáticamente, así pues:
 
@@ -230,11 +244,11 @@ Borraría el objeto Example de id 1 y también todos los ficheros que tenga enla
 
 #### Borrado explícito para parámetros de un único fichero
 
-Sería el mismo modus operandi que con los enlaces de tipo polimórfico de Stapler.
+Sería el mismo modus operandi que con los enlaces de tipo polimórfico de Laravel.
 
 ```php
 
-$example->avatar()->delete();
+    $example->avatar()->delete();
 
 ```
 

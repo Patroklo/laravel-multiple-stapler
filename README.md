@@ -1,153 +1,259 @@
-# Laravel Multiple Files Stapler Handler
+# Laravel Stapler Multiple File Handler
+
+## Index
+
+* ### Install
+* ### Description
+    * #### Methods
+* ### Configuration of Stapler properties
+    * #### Declaring single file properties
+    * #### Declaring multiple file properties
+* ### File insertion
+    * #### Inserting files in single file properties
+    * #### Inserting files in multiple file properties
+* ### Acessing uploaded file data
+    * #### Acessing single file parameters
+    * #### Acessing multiple file parameters
+* ### Deleting linked files
+    * #### Explicit deletion of single file properties
+    * #### Explicit deletion of multiple file properties
 
 ## Install
 
-Require this package with composer using the following command:
+Add this package with composer with the following command:
 
 ```bash
 composer require cyneek/laravel-multiple-stapler
 ```
 
-After updating composer, add the service provider to the `providers` array in `config/app.php`
+After updating composer, add the service providers to the `providers` array in `config/app.php`.
 
 ```php
+Codesleeve\LaravelStapler\Providers\L5ServiceProvider::class,
 Cyneek\LaravelMultipleStapler\LaravelMultipleStaplerProvider::class
 ```
 
-From the command line, use the migration generator; that will create the basic table responsible of holding all the file data that will be attached to the application models.
+From the command line, use the migration tool; it will make a basic table in charge of handling all the data from the files linked to the application Models.
 
 ```php
 php artisan migrate
 ```
 
-And now you are ready to go!
+Aaaaand it's done! 
 
 
-## Configuration
+## Description
 
-### One file properties
+### Methods
 
-Este es el comportamiento normal de la librería de Stapler para Laravel. Permite subir un único fichero y enlazarlo una propiedad de un Model cargado, permitiendo todas las operaciones que se realizarían sobre un fichero subido en la versión vanilla de Stapler. 
+* **hasAttachedFile**: Method to link a parameter with only one file.
 
-This is the usual behaviour of the Stapler library for Laravel. It lets the upload of a single file and link it into a loaded Model property, also letting all the usual operations that you can do with the Stapler vanilla version.
+* **hasMultipleAttachedFiles:** Method that allows linking multiple files gallery-like into one parameter.
 
+The parameters that both methods accept are:
 
+ * **name**: [String|Required] The name that will be assigned to the file parameter in the Model.
+ 
+ * **options**: [Array|Required] Stapler options that wil be used to handle the linked file. If you want to know more about the available options in this library, [you can click here to read the Stapler oficial documentation.](https://github.com/CodeSleeve/stapler)
+ 
+ * **attachedModelClass**: [String|Optional] Here you can define a model classname that will be used to handle the file information instead of the default one: `StaplerFiles`. The Model must implement the `LaravelStaplerInterface` interface.
 
+## Configuration of Stapler properties
 
-You can now re-generate the docs yourself (for future updates)
+### Declaring single file properties
 
-```bash
-php artisan ide-helper:generate
+This is the usual behavior in the Stapler library for Laravel. It lets uploading one single file and linking it into a loaded Model property, allowing all the usual operations that could be made in a vanilla Stapler file attachment.
+
+To make a new property that links to a single file in a Model, you have to follow the next steps:
+
+1. Add the `MultipleFileTrait` trait into the model
+```php
+class Example extends \Eloquent
+{
+    use MultipleFileTrait;
 ```
 
-Note: `bootstrap/compiled.php` has to be cleared first, so run `php artisan clear-compiled` before generating (and `php artisan optimize` after).
-
-You can configure your composer.json to do this after each commit:
-
-```js
-"scripts":{
-    "post-update-cmd": [
-        "php artisan clear-compiled",
-        "php artisan ide-helper:generate",
-        "php artisan optimize"
-    ]
-},
-```
-
-You can also publish the config file to change implementations (ie. interface to specific class) or set defaults for `--helpers` or `--sublime`.
-
-```bash
-php artisan vendor:publish --provider="Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider" --tag=config
-```
-
-The generator tries to identify the real class, but if it cannot be found, you can define it in the config file.
-
-Some classes need a working database connection. If you do not have a default working connection, some facades will not be included.
-You can use an in-memory SQLite driver, using the -M option.
-
-You can choose to include helper files. This is not enabled by default, but you can override it with the `--helpers (-H)` option.
-The `Illuminate/Support/helpers.php` is already set-up, but you can add/remove your own files in the config file.
-
-### Automatic phpDocs for models
-
-> You need to require `doctrine/dbal: ~2.3` in your own composer.json to get database columns.
-
-
-```bash
-composer require doctrine/dbal
-```
-
-If you don't want to write your properties yourself, you can use the command `php artisan ide-helper:models` to generate
-phpDocs, based on table columns, relations and getters/setters. You can write the comments directly to your Model file, using the `--write (-W)` option. By default, you are asked to overwrite or write to a separate file (`_ide_helper_models.php`). You can force No with `--nowrite (-N)`.
-Please make sure to backup your models, before writing the info.
-It should keep the existing comments and only append new properties/methods. The existing phpdoc is replaced, or added if not found.
-With the `--reset (-R)` option, the existing phpdocs are ignored, and only the newly found columns/relations are saved as phpdocs.
-
-```bash
-php artisan ide-helper:models Post
-```
+2. Add into the `__construct()` method the properties you want to add using `hasAttachedFile` method.
 
 ```php
-/**
- * An Eloquent Model: 'Post'
- *
- * @property integer $id
- * @property integer $author_id
- * @property string $title
- * @property string $text
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property-read \User $author
- * @property-read \Illuminate\Database\Eloquent\Collection|\Comment[] $comments
- */
+    function __construct(array $attributes = [] )
+    {
+
+        $this->hasAttachedFile('avatar', [
+            'styles' => [
+                'medium' => '300x300',
+                'thumb' => '100x100'
+            ]
+        ]);
+        
+        parent::__construct($attributes);
+
+    }
 ```
 
-By default, models in `app/models` are scanned. The optional argument tells what models to use (also outside app/models).
+Warning: It's required to add the parameter creation methods BEFORE the construct parent calling.
 
-```bash
-php artisan ide-helper:models Post User
+### Declaring multiple file properties
+
+This behavior it's possible thanks to the polymorphyc tables from Laravel, they will store all the file data linking it with their parent Model objects thanks to the fields `fileable_id`, `fileable_type` and `fileable_field` that will store the parameter name.
+
+To make a multiple file handler property in a model, you have to follow the next steps:
+
+1. Add the `MultipleFileTrait` trait into the model
+```php
+class Example extends \Eloquent
+{
+    use MultipleFileTrait;
 ```
 
-You can also scan a different directory, using the `--dir` option (relative from the base path):
-
-```bash
-php artisan ide-helper:models --dir="path/to/models" --dir="app/src/Model"
-```
-
-You can publish the config file (`php artisan vendor:publish`) and set the default directories.
-
-Models can be ignored using the `--ignore (-I)` option
-
-```bash
-php artisan ide-helper:models --ignore="Post,User"
-```
-
-Note: With namespaces, wrap your model name in " signs: `php artisan ide-helper:models "API\User"`, or escape the slashes (`Api\\User`)
-
-## PhpStorm Meta for Container instances
-
-It's possible to generate a PhpStorm meta file, to [add support for factory design pattern](https://confluence.jetbrains.com/display/PhpStorm/PhpStorm+Advanced+Metadata). For Laravel, this means we can make PhpStorm understand what kind of object we are resolving from the IoC Container. For example, `events` will return an `Illuminate\Events\Dispatcher` object, so with the meta file you can call `app('events')` and it will autocomplete the Dispatcher methods.
-
-``` bash
-php artisan ide-helper:meta
-```
+2. Add into the `__construct()` method the properties you want to add using `hasMultipleAttachedFiles` method.
 
 ```php
-app('events')->fire();
-\App::make('events')->fire();
+    function __construct(array $attributes = [] )
+    {
 
-/** @var \Illuminate\Foundation\Application $app */
-$app->make('events')->fire();
+        $this->hasMultipleAttachedFiles('images', [
+            'styles' => [
+                'medium' => '300x300',
+                'thumb' => '100x100'
+            ]
+        ]);
+        
+        parent::__construct($attributes);
 
-// When the key is not found, it uses the argument as class name
-app('App\SomeClass');
+    }
+```
+Warning: It's required to add the parameter creation methods BEFORE the construct parent calling.
+
+## File insertion
+
+### Inserting files in single file properties
+
+For this example we will use a form that will upload a single file into our Model property. It's possible to use form fields that accept multiple files, but in those cases, all except the first uploaded file will be automatically discarded.
+
+You must keep in mind that when you are making an `update` operation with a form, if there is a previous file linked in that property, it will be automatically deleted if you upload a newer one.
+
+#### Form view
+
+```php
+
+<?= Form::open(['url' => action('ExampleController@store'), 'method' => 'POST', 'files' => true]) ?>
+    <?= Form::input('name') ?>
+    <?= Form::input('description') ?>
+    <?= Form::file('avatar') ?>
+    <?= Form::submit('save') ?>
+<?= Form::close() ?>
+
 ```
 
-Pre-generated example: https://gist.github.com/barryvdh/bb6ffc5d11e0a75dba67
+#### Controller handler
 
-> Note: You might need to restart PhpStorm and make sure `.phpstorm.meta.php` is indexed.
-> Note: When you receive a FatalException about a class that is not found, check your config (for example, remove S3 as cloud driver when you don't have S3 configured. Remove Redis ServiceProvider when you don't use it).
+```php
 
-### License
+public function store()
+{
+    // Create and save a new Example object, mass assigning all of the input fields (including the 'avatar' file field).
+    $example = Example::create(Input::all());
+}
 
-The Laravel IDE Helper Generator is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+```
+
+This is the minimum code required to upload a file with a form and linking it into a new object Model. To learn about acessing file data, please read above in this Readme.
+
+### Inserting files in multiple file properties
+
+It's required to have a Model with a file parameter capable of handling multiple files throught the `hasMultipleAttachedFiles` method.
+
+#### Form view
+
+```php
+
+<?= Form::open(['url' => action('ExampleController@storeMultiple'), 'method' => 'POST', 'files' => true]) ?>
+    <?= Form::input('name') ?>
+    <?= Form::input('description') ?>
+    <!-- Note that the field name now it's written as an array and the additional option in the file() method -->
+    <?= Form::file('avatar[]', ['multiple' => true]) ?>
+    <?= Form::submit('save') ?>
+<?= Form::close() ?>
+
+```
+
+#### Controller handler
+
+```php
+
+public function storeMultiple()
+{
+    // Create and save a new Example object, mass assigning all of the input fields (including the 'avatar' file field).
+    $example = Example::create(Input::all());
+}
+
+```
+
+As you can see, the only difference when working with multiple or single files it's in the Model definition and the form. The system will handle the storage of every uploaded file and will link it into the loaded Model.
+
+### Acessing uploaded file data
+
+#### Acessing single file parameters
+
+To access the linked file data from a loaded object, you only have to call it's parameter name as if it was a normal Laravel relation.
+
+```php
+    $example = Example::find(1);
+   
+    $example->avatar->createdAt();
+```
+
+
+#### Acessing multiple file parameters
+
+The only difference with this case in particular is that, instead of returning an Attached object as in the previous example, it will return a Collection with all the linked files, so you'll have to go over every file object as if it were an array if you want to interact with them.
+
+```php
+
+    $example = Example::find(1);
+   
+    foreach ($example->avatar as $avatar)
+    {
+        echo $avatar->file->createdAt();
+    }
+
+```
+
+
+
+### Deleting linked files
+
+You have to always keep in mind that, if you delete a parent object with attached linked files, those will also be automatically deleted, so:
+
+```php
+
+    Example::delete(1);
+
+```
+
+Would delete the Example object with id 1 and all its linked files.
+
+
+#### Explicit deletion of single file properties
+
+It would be the same modus operandi as with the polymorphyc relations from Laravel.
+
+```php
+
+    $example->avatar()->delete();
+
+```
+
+#### Explicit deletion of multiple file properties
+
+In this case, you'll need to go over every file object to delete it.
+
+```php
+
+    foreach ($example->avatar as $avatar)
+    {
+        echo $avatar->delete();
+    }
+   
+```

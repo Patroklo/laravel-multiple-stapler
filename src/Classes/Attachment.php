@@ -7,7 +7,8 @@ use App;
 
 /**
  * Class Attachment
- *
+ * Will handle the heavy lifting of the operations needed when making CRUD operations in the Models with
+ * file parameters
  *
  * @author Joseba Juániz <joseba.juaniz@gmail.com>
  */

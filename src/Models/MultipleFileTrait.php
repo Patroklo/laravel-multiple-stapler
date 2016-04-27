@@ -113,28 +113,6 @@ trait MultipleFileTrait
         return parent::getAttribute($key);
     }
 
-    /**
-     * Handle the dynamic setting of attachment objects.
-     *
-     * @param string $key
-     * @param mixed $value
-     */
-//    public function setAttribute($key, $value)
-//    {
-//        if (array_key_exists($key, $this->attachedModels))
-//        {
-//            if ($value)
-//            {
-//                /** @var Attachment $attachedFile */
-//                $attachedFile = $this->attachedModels[$key];
-//                //    $attachedFile->setUploadedFile($value);
-//            }
-//
-//            return;
-//        }
-//
-//        parent::setAttribute($key, $value);
-//    }
 
     /**
      * Get all of the current attributes and attachment objects on the model.

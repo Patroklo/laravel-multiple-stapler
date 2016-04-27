@@ -7,17 +7,20 @@ use Cyneek\LaravelMultipleStapler\Interfaces\LaravelStaplerInterface;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class MultipleFiles
+ * Class StaplerFiles
+ *
+ * Will handle all the file and data storing of each Stapler file parameter.
  *
  * @author Joseba Juániz <joseba.juaniz@gmail.com>
- * 
+ *
  * @property integer $id
  * @property integer $fileable_id
  * @property string $fileable_type
  * @property string $fileable_field
- * @property string $field_file_name
- * @property integer $field_file_size
- * @property string $field_updated_at
+ * @property string $file_file_name
+ * @property integer $file_file_size
+ * @property string $file_updated_at
+ * @property string $file_created_at
  * @property $created_at string
  * @property $updated_at string
  */
@@ -78,6 +81,20 @@ class StaplerFiles extends Model implements StaplerableInterface, LaravelStapler
         {
             static::$dispatcher->forget(static::$fileEventName);
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __call($name, $arguments)
+    {
+        // If $name corresponds with a attached field
+        if (method_exists($this->file, $name))
+        {
+            return $this->file->$name($arguments);
+        }
+
+        return parent::__call($name, $arguments);
     }
 
 

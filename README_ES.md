@@ -1,5 +1,7 @@
 # Manejador de múltiples ficheros para Laravel Stapler
 
+## [English Readme](https://github.com/Patroklo/laravel-multiple-stapler/blob/master/README.md)
+
 ## Índice
 
 * [Instalación](#instalación)

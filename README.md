@@ -1,22 +1,24 @@
 # Laravel Stapler Multiple File Handler
 
+## [Spanish Readme](https://github.com/Patroklo/laravel-multiple-stapler/blob/master/README_ES.md)
+
 ## Index
 
-* [Install](https://github.com/Patroklo/laravel-multiple-stapler#install)
-* [Description](https://github.com/Patroklo/laravel-multiple-stapler#description)
-    * [Methods](https://github.com/Patroklo/laravel-multiple-stapler#methods)
-* [Configuration of Stapler properties](https://github.com/Patroklo/laravel-multiple-stapler#configuration-of-stapler-properties)
-    * [Declaring single file properties](https://github.com/Patroklo/laravel-multiple-stapler#declaring-single-file-properties)
-    * [Declaring multiple file properties](https://github.com/Patroklo/laravel-multiple-stapler#declaring-multiple-file-properties)
-* [File insertion](https://github.com/Patroklo/laravel-multiple-stapler#file-insertion)
-    * [Inserting files in single file properties](https://github.com/Patroklo/laravel-multiple-stapler#inserting-files-in-single-file-properties)
-    * [Inserting files in multiple file properties](https://github.com/Patroklo/laravel-multiple-stapler#inserting-files-in-multiple-file-properties)
-* [Acessing uploaded file data](https://github.com/Patroklo/laravel-multiple-stapler#acessing-uploaded-file-data)
-    * [Acessing single file parameters](https://github.com/Patroklo/laravel-multiple-stapler#acessing-single-file-parameters)
-    * [Acessing multiple file parameters](https://github.com/Patroklo/laravel-multiple-stapler#acessing-multiple-file-parameters)
-* [Deleting linked files](https://github.com/Patroklo/laravel-multiple-stapler#deleting-linked-files)
-    * [Explicit deletion of single file properties](https://github.com/Patroklo/laravel-multiple-stapler#explicit-deletion-of-single-file-properties)
-    * [Explicit deletion of multiple file properties](https://github.com/Patroklo/laravel-multiple-stapler#explicit-deletion-of-multiple-file-properties)
+* [Install](#install)
+* [Description](#description)
+    * [Methods](#methods)
+* [Configuration of Stapler properties](#configuration-of-stapler-properties)
+    * [Declaring single file properties](#declaring-single-file-properties)
+    * [Declaring multiple file properties](#declaring-multiple-file-properties)
+* [File insertion](#file-insertion)
+    * [Inserting files in single file properties](#inserting-files-in-single-file-properties)
+    * [Inserting files in multiple file properties](#inserting-files-in-multiple-file-properties)
+* [Acessing uploaded file data](#acessing-uploaded-file-data)
+    * [Acessing single file parameters](#acessing-single-file-parameters)
+    * [Acessing multiple file parameters](#acessing-multiple-file-parameters)
+* [Deleting linked files](#deleting-linked-files)
+    * [Explicit deletion of single file properties](#explicit-deletion-of-single-file-properties)
+    * [Explicit deletion of multiple file properties](#explicit-deletion-of-multiple-file-properties)
 
 ## Install
 

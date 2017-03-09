@@ -38,7 +38,7 @@ class StaplerTable extends Migration {
      */
     public function down()
     {
-        Schema::drop('staple_files');
+        Schema::drop('stapler_files');
     }
 
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Cyneek\LaravelMultipleStapler;
+namespace Cyneek\LaravelMultipleStapler\Providers;
 
 
 use Cyneek\LaravelMultipleStapler\Interfaces\LaravelStaplerInterface;
@@ -24,5 +24,13 @@ class LaravelMultipleStaplerProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(LaravelStaplerInterface::class, StaplerFiles::class);
+
+        // Publish migrations
+        $migrations = realpath(__DIR__.'/../Migrations');
+
+        $this->publishes([
+            $migrations => $this->app->databasePath().'/migrations',
+        ], 'migrations');
+
     }
 }

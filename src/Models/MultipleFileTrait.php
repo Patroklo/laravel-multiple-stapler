@@ -30,7 +30,7 @@ trait MultipleFileTrait
      * @param String $model // If you want to declare a different model than StaplerFiles to handle
      *                      // the files.
      */
-    public function hasAttachedFile($name, array $options = [], $model = NULL)
+    public function hasOneAttachedFile($name, array $options = [], $model = NULL)
     {
         $attachment = new Attachment($this, $name, $options, $model);
 

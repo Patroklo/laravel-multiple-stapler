@@ -4,6 +4,7 @@
 
 ## Índice
 
+* [Cambios](#cambios)
 * [Instalación](#instalación)
 * [Descripción](#descripción)
     * [Métodos](#métodos)
@@ -19,6 +20,13 @@
 * [Borrado de archivos enlazados.](#borrado-de-archivos-enlazados)
     * [Borrado explícito para parámetros de un único fichero](#borrado-explícito-para-parámetros-de-un-único-fichero)
     * [Borrado explícito de parámetros de múltiples ficheros](#borrado-explícito-de-parámetros-de-múltiples-ficheros)
+* [Problemas conocidos](#problemas-conocidos)
+
+## Changes
+
+#### v0.1.1
+
+Se ha cambiado el método `hasAttachedFile` por `hasOneAttachedFile` para mejorar la compatibilidad con el paquete `CodeSleeve/laravel-stapler`. Ahora es posible usar ambos a la ves en el mismo Model.
 
 ## Instalación
 
@@ -32,7 +40,7 @@ Después de actualizar composer, añade los proveedores de servicios al array `p
 
 ```php
 Codesleeve\LaravelStapler\Providers\L5ServiceProvider::class,
-Cyneek\LaravelMultipleStapler\LaravelMultipleStaplerProvider::class
+Cyneek\LaravelMultipleStapler\Providers\LaravelMultipleStaplerProvider::class
 ```
 
 Desde la línea de comandos, usa el generador de migraciones; éste creará una tabla básica responsable de contener todos los datos de los archivos que estarán enlazados a los Models de la aplicación.
@@ -48,7 +56,7 @@ Y ya estás listos para trabajar!
 
 ### Métodos
 
-* **hasAttachedFile**: Método para vincular un parámetro con un único archivo.
+* **hasOneAttachedFile**: Método para vincular un parámetro con un único archivo.
 
 * **hasMultipleAttachedFiles:** método que permite vincular múltiples archivos a un mismo parámetro al estilo galería.
 
@@ -75,13 +83,13 @@ class Example extends \Eloquent
     use MultipleFileTrait;
 ```
 
-2. En el método `__construct()` inserta las propiedades utilizando el método `hasAttachedFile`.
+2. En el método `__construct()` inserta las propiedades utilizando el método `hasOneAttachedFile`.
 
 ```php
     function __construct(array $attributes = [] )
     {
 
-        $this->hasAttachedFile('avatar', [
+        $this->hasOneAttachedFile('avatar', [
             'styles' => [
                 'medium' => '300x300',
                 'thumb' => '100x100'
@@ -266,3 +274,14 @@ En este caso habría que ir fichero a fichero.
     }
    
 ```
+
+## Problemas conocidos
+
+Hay un problema conocido para Laravel 5.* que lanza una excepción mientras se usa `php artisan` cuando se tiene instalado el paquete `codesleeve/laravel-stapler`.
+
+```
+  [ErrorException]
+  Missing argument 2 for Codesleeve\LaravelStapler\Providers\ServiceProvider::Codesleeve\LaravelStapler\Providers\{closure}(), called in */Laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 678 and defined
+```
+
+[Aquí se indica una solución para este problema (inglés)](https://github.com/CodeSleeve/laravel-stapler/issues/118)

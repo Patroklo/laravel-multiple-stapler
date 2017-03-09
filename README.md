@@ -4,6 +4,7 @@
 
 ## Index
 
+* [Changes](#changes)
 * [Install](#install)
 * [Description](#description)
     * [Methods](#methods)
@@ -19,6 +20,15 @@
 * [Deleting linked files](#deleting-linked-files)
     * [Explicit deletion of single file properties](#explicit-deletion-of-single-file-properties)
     * [Explicit deletion of multiple file properties](#explicit-deletion-of-multiple-file-properties)
+* [Known problems](#known-problems)
+
+   
+## Changes
+
+#### v0.1.1
+
+Changed the method `hasAttachedFile` into `hasOneAttachedFile` to improve compatibility with the `CodeSleeve/laravel-stapler` package. Now you can use both packages at the same time in your models.
+
 
 ## Install
 
@@ -32,7 +42,7 @@ After updating composer, add the service providers to the `providers` array in `
 
 ```php
 Codesleeve\LaravelStapler\Providers\L5ServiceProvider::class,
-Cyneek\LaravelMultipleStapler\LaravelMultipleStaplerProvider::class
+Cyneek\LaravelMultipleStapler\Providers\LaravelMultipleStaplerProvider::class
 ```
 
 From the command line, use the migration tool; it will make a basic table in charge of handling all the data from the files linked to the application Models.
@@ -48,7 +58,7 @@ Aaaaand it's done!
 
 ### Methods
 
-* **hasAttachedFile**: Method to link a parameter with only one file.
+* **hasOneAttachedFile**: Method to link a parameter with only one file.
 
 * **hasMultipleAttachedFiles:** Method that allows linking multiple files gallery-like into one parameter.
 
@@ -75,13 +85,13 @@ class Example extends \Eloquent
     use MultipleFileTrait;
 ```
 
-2. Add into the `__construct()` method the properties you want to add using `hasAttachedFile` method.
+2. Add into the `__construct()` method the properties you want to add using `hasOneAttachedFile` method.
 
 ```php
     function __construct(array $attributes = [] )
     {
 
-        $this->hasAttachedFile('avatar', [
+        $this->hasOneAttachedFile('avatar', [
             'styles' => [
                 'medium' => '300x300',
                 'thumb' => '100x100'
@@ -259,3 +269,14 @@ In this case, you'll need to go over every file object to delete it.
     }
    
 ```
+
+## Known problems
+
+There's a known Laravel 5.* issue that throws an exception while using `php artisan` while having installed the `codesleeve/laravel-stapler` package.
+
+```
+  [ErrorException]
+  Missing argument 2 for Codesleeve\LaravelStapler\Providers\ServiceProvider::Codesleeve\LaravelStapler\Providers\{closure}(), called in */Laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 678 and defined
+```
+
+[There's a solution for that in this issue](https://github.com/CodeSleeve/laravel-stapler/issues/118)

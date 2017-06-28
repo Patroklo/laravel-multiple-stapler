@@ -91,7 +91,7 @@ class StaplerFiles extends Model implements StaplerableInterface, LaravelStapler
         // If $name corresponds with a attached field
         if (method_exists($this->file, $name))
         {
-            return $this->file->$name($arguments);
+            return call_user_func_array([$this->file, $name], $arguments);
         }
 
         return parent::__call($name, $arguments);

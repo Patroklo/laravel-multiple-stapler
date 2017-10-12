@@ -54,9 +54,23 @@ trait MultipleFileTrait
     }
 
     /**
-     * Instance's boot method
+     * The "booting" method of the model.
      */
     public static function boot()
+    {
+        parent::boot();
+
+        static::bootMultipleStapler();
+    }
+
+    /**
+     * Register eloquent event handlers.
+     * We'll spin through each of the attached files defined on this class
+     * and register callbacks for the events we need to observe in order to
+     * handle file uploads.
+     */
+
+    public static function bootMultipleStapler()
     {
         parent::boot();
 
